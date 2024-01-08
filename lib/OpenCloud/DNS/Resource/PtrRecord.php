@@ -111,7 +111,7 @@ class PtrRecord extends Record
         }
 
         $url = clone $this->getUrl();
-        $url->addPath('..')
+        $url = $url->addPath('..')
             ->normalizePath()
             ->addPath($this->link_rel)
             ->setQuery($params);

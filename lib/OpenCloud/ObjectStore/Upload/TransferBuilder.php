@@ -17,7 +17,6 @@
 
 namespace OpenCloud\ObjectStore\Upload;
 
-use Guzzle\Http\EntityBody;
 use OpenCloud\Common\Exceptions\InvalidArgumentError;
 use OpenCloud\ObjectStore\Resource\Container;
 
@@ -32,7 +31,7 @@ class TransferBuilder
     protected $container;
 
     /**
-     * @var EntityBody The data payload.
+     * @var Stream The data payload.
      */
     protected $entityBody;
 
@@ -95,10 +94,10 @@ class TransferBuilder
     }
 
     /**
-     * @param EntityBody $entityBody
+     * @param Stream $entityBody
      * @return $this
      */
-    public function setEntityBody(EntityBody $entityBody)
+    public function setEntityBody(Stream $entityBody)
     {
         $this->entityBody = $entityBody;
 

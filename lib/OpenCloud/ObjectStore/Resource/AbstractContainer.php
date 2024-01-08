@@ -96,7 +96,7 @@ abstract class AbstractContainer extends AbstractResource
      *
      * @param string $path Path to add to URL. Optional.
      * @param array $params Query parameters to add to URL. Optional.
-     * @return Url URL of this container + path + query parameters.
+     * @return \Psr\Http\Message\UriInterface URL of this container + path + query parameters.
      */
     public function getUrl($path = null, array $params = array())
     {
@@ -118,7 +118,7 @@ abstract class AbstractContainer extends AbstractResource
      * This method will enable your CDN-enabled container to serve out HTML content like a website.
      *
      * @param $indexPage The data object name (i.e. a .html file) that will serve as the main index page.
-     * @return \Guzzle\Http\Message\Response The HTTP response for this API operation.
+     * @return \GuzzleHttp\Psr7\Response The HTTP response for this API operation.
      */
     public function setStaticIndexPage($page)
     {
@@ -137,7 +137,7 @@ abstract class AbstractContainer extends AbstractResource
      * Set the default error page for your static site.
      *
      * @param $name The data object name (i.e. a .html file) that will serve as the main error page.
-     * @return \Guzzle\Http\Message\Response The HTTP response for this operation.
+     * @return \GuzzleHttp\Psr7\Response The HTTP response for this operation.
      */
     public function setStaticErrorPage($page)
     {

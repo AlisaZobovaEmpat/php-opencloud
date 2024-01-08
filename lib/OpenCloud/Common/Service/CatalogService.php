@@ -17,12 +17,12 @@
 
 namespace OpenCloud\Common\Service;
 
-use Guzzle\Http\ClientInterface;
-use Guzzle\Http\Exception\BadResponseException;
-use Guzzle\Http\Url;
+use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\BadResponseException;
 use OpenCloud\Common\Base;
 use OpenCloud\Common\Exceptions;
 use OpenCloud\Common\Http\Message\Formatter;
+use OpenCloud\Common\Http\Url;
 use OpenCloud\OpenStack;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -80,7 +80,6 @@ abstract class CatalogService extends AbstractService
         $this->setClient($client);
 
         $this->name = $name ? : static::DEFAULT_NAME;
-        $this->region = $region;
 
         $this->region = $region;
         if ($this->regionless !== true && !$this->region) {
@@ -155,13 +154,20 @@ abstract class CatalogService extends AbstractService
      *
      * @param  string $path  URL path segment
      * @param  array  $query Array of query pairs
-     * @return Guzzle\Http\Url
+     * @return \Psr\Http\Message\UriInterface
      */
     public function getUrl($path = null, array $query = array())
     {
-        return Url::factory($this->getBaseUrl())
-            ->addPath($path)
-            ->setQuery($query);
+        $url = $this->getBaseUrl();
+
+        if ($path) {
+            $url = $url->addPath($path);
+        }
+
+        $url = $url->setQuery($query);
+
+
+        return Url::factory($url);
     }
 
     /**
@@ -242,7 +248,7 @@ abstract class CatalogService extends AbstractService
     private function getMetaUrl($resource)
     {
         $url = clone $this->getBaseUrl();
-        $url->addPath($resource);
+        $url = $url->addPath($resource);
         try {
             $response = $this->getClient()->get($url)->send();
 
@@ -256,7 +262,7 @@ abstract class CatalogService extends AbstractService
 
     /**
      * Get the base URL for this service, based on the set URL type.
-     * @return \Guzzle\Http\Url
+     * @return \GuzzleHttp\Psr7\Uri
      * @throws \OpenCloud\Common\Exceptions\ServiceException
      */
     public function getBaseUrl()

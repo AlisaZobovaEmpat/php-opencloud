@@ -17,8 +17,8 @@
 
 namespace OpenCloud\Compute\Resource;
 
-use Guzzle\Http\Url;
 use OpenCloud\Common\Exceptions;
+use OpenCloud\Common\Http\Url;
 use OpenCloud\Common\Resource\PersistentResource;
 use OpenCloud\Compute\Constants\Network as NetworkConst;
 use OpenCloud\Compute\Service;
@@ -131,7 +131,7 @@ class Network extends PersistentResource implements NetworkInterface
             $url = $this->getParent()->getUrl($this->getResourcePath());
 
             if (null !== ($primaryKey = $this->getProperty($this->primaryKeyField()))) {
-                $url->addPath($primaryKey);
+                $url = $url->addPath($primaryKey);
             }
         }
 

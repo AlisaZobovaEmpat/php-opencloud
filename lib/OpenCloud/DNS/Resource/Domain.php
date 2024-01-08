@@ -155,10 +155,10 @@ class Domain extends AbstractResource
     public function changes($since = null)
     {
         $url = clone $this->getUrl();
-        $url->addPath('changes');
+        $url = $url->addPath('changes');
 
         if ($since) {
-            $url->setQuery(array('since' => $since));
+            $url = $url->setQuery(array('since' => $since));
         }
 
         $response = $this->getService()
@@ -202,8 +202,8 @@ class Domain extends AbstractResource
         $records = true
     ) {
         $url = $this->getUrl();
-        $url->addPath('clone');
-        $url->setQuery(array(
+        $url = $url->addPath('clone');
+        $url = $url->setQuery(array(
             'cloneName'          => $newDomainName,
             'cloneSubdomains'    => $subdomains,
             'modifyComment'      => $comments,

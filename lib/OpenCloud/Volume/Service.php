@@ -41,17 +41,17 @@ class Service extends NovaService
      *
      * @param boolean $details if TRUE, return all details
      * @param array   $filter  array of filter key/value pairs
-     * @return \OpenCloud\Common\Collection
+     * @return \OpenCloud\Common\Collection\PaginatedIterator
      */
     public function volumeList($details = true, $filter = array())
     {
         $url = clone $this->getUrl(Resource\Volume::ResourceName());
 
         if ($details === true) {
-            $url->addPath('detail');
+            $url = $url->addPath('detail');
         }
 
-        $url->setQuery($filter);
+        $url = $url->setQuery($filter);
 
         return $this->resourceList('Volume', $url);
     }
@@ -93,12 +93,12 @@ class Service extends NovaService
      * Returns a Collection of Snapshot objects
      *
      * @param array $filter array of filter key/value pairs
-     * @return \OpenCloud\Common\Collection
+     * @return \OpenCloud\Common\Collection\PaginatedIterator
      */
     public function snapshotList($filter = array())
     {
         $url = clone $this->getUrl();
-        $url->addPath(Snapshot::resourceName())->setQuery($filter);
+        $url = $url->addPath(Snapshot::resourceName())->setQuery($filter);
 
         return $this->resourceList('Snapshot', $url);
     }

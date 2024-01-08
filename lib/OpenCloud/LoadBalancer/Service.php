@@ -60,8 +60,8 @@ class Service extends NovaService
         }
 
         $url = $this->getUrl();
-        $url->addPath(Resource\LoadBalancer::resourceName());
-        $url->setQuery($filter);
+        $url = $url->addPath(Resource\LoadBalancer::resourceName());
+        $url = $url->setQuery($filter);
 
         $options = array_merge($options, array('baseUrl' => $url, 'key.marker' => 'id'));
 
@@ -89,9 +89,9 @@ class Service extends NovaService
     public function billableLoadBalancerList(array $filter = array())
     {
         $url = $this->getUrl();
-        $url->addPath(Resource\LoadBalancer::resourceName());
-        $url->addPath('billable');
-        $url->setQuery($filter);
+        $url = $url->addPath(Resource\LoadBalancer::resourceName());
+        $url = $url->addPath('billable');
+        $url = $url->setQuery($filter);
 
         return $this->resourceList('LoadBalancer', $url);
     }

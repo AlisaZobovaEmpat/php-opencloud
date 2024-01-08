@@ -17,7 +17,7 @@
 
 namespace OpenCloud\ObjectStore;
 
-use Guzzle\Http\EntityBody;
+use GuzzleHttp\Psr7;
 use OpenCloud\Common\Constants\Header;
 use OpenCloud\Common\Constants\Mime;
 use OpenCloud\Common\Exceptions;
@@ -160,13 +160,13 @@ class Service extends AbstractService
      * @param string $path The path to the archive being extracted
      * @param string|stream $archive The contents of the archive (either string or stream)
      * @param string $archiveType The type of archive you're using {@see \OpenCloud\ObjectStore\Constants\UrlType}
-     * @return \Guzzle\Http\Message\Response HTTP response from API
+     * @return \GuzzleHttp\Psr7\Response HTTP response from API
      * @throws \OpenCloud\Common\Exceptions\InvalidArgumentError if specifed `$archiveType` is invalid
      * @throws Exception\BulkOperationException if there are errors with the bulk extract
      */
     public function bulkExtract($path = '', $archive, $archiveType = UrlType::TAR_GZ)
     {
-        $entity = EntityBody::factory($archive);
+        $entity = Psr7\Utils::streamFor($archive);
 
         $acceptableTypes = array(
             UrlType::TAR,
@@ -177,7 +177,7 @@ class Service extends AbstractService
         if (!in_array($archiveType, $acceptableTypes)) {
             throw new InvalidArgumentError(sprintf(
                 'The archive type must be one of the following: [%s]. You provided [%s].',
-                implode($acceptableTypes, ','),
+                implode(',', $acceptableTypes),
                 print_r($archiveType, true)
             ));
         }
@@ -220,7 +220,7 @@ class Service extends AbstractService
      *                        '/photos_container/object_2'
      *                     )
      *
-     * @return array[Guzzle\Http\Message\Response] HTTP responses from the API
+     * @return array[GuzzleHttp\Psr7\Response] HTTP responses from the API
      * @throws Exception\BulkOperationException if the bulk delete operation fails
      */
     public function batchDelete(array $paths)
@@ -240,12 +240,12 @@ class Service extends AbstractService
      * Internal method for dispatching single batch delete requests.
      *
      * @param array $paths
-     * @return \Guzzle\Http\Message\Response
+     * @return \GuzzleHttp\Psr7\Response
      * @throws Exception\BulkOperationException
      */
     private function executeBatchDeleteRequest(array $paths)
     {
-        $entity = EntityBody::factory(implode(PHP_EOL, $paths));
+        $entity = Psr7\Utils::streamFor(implode(PHP_EOL, $paths));
 
         $url = $this->getUrl()->setQuery(array('bulk-delete' => true));
 
@@ -274,7 +274,7 @@ class Service extends AbstractService
      * * `read.batchLimit`: Number of files to read at a time from `$old` container. Optional; default = 1000.
      * * `write.batchLimit`: Number of files to write at a time to `$new` container. Optional; default = 1000.
      * * `read.pageLimit`: Number of filenames to read at a time from `$old` container. Optional; default = 10000.
-     * @return array[Guzzle\Http\Message\Response] HTTP responses from the API
+     * @return array[GuzzleHttp\Psr7\Response] HTTP responses from the API
      */
     public function migrateContainer(Container $old, Container $new, array $options = array())
     {

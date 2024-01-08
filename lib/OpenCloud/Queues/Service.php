@@ -192,7 +192,7 @@ class Service extends CatalogService implements EventSubscriberInterface
 
         try {
             $url = $this->getUrl();
-            $url->addPath('queues')->addPath($name);
+            $url = $url->addPath('queues')->addPath($name);
 
             $this->getClient()->head($url)->send();
 

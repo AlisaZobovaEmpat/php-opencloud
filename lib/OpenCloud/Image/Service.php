@@ -17,6 +17,7 @@
 
 namespace OpenCloud\Image;
 
+use OpenCloud\Common\Http\Url;
 use OpenCloud\Common\Service\CatalogService;
 use OpenCloud\Image\Resource\Image;
 use OpenCloud\Image\Resource\Schema\Schema;
@@ -40,7 +41,7 @@ class Service extends CatalogService
     public function listImages(array $params = array())
     {
         $url = clone $this->getUrl();
-        $url->addPath(Image::resourceName())->setQuery($params);
+        $url = $url->addPath(Image::resourceName())->setQuery($params);
 
         return $this->resourceList('Image', $url);
     }
@@ -78,7 +79,7 @@ class Service extends CatalogService
      * A convenience method which returns the URL needed to retrieve schemas.
      *
      * @param $path
-     * @return \Guzzle\Http\Url
+     * @return Url
      */
     protected function getSchemaUrl($path)
     {

@@ -17,7 +17,6 @@
 
 namespace OpenCloud\Queues\Resource;
 
-use Guzzle\Http\Url;
 use OpenCloud\Common\Collection\PaginatedIterator;
 use OpenCloud\Common\Http\Message\Formatter;
 use OpenCloud\Common\Resource\PersistentResource;

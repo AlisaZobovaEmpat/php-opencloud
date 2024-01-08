@@ -17,11 +17,10 @@
 
 namespace OpenCloud;
 
-use Guzzle\Http\Url;
 use OpenCloud\Common\Exceptions;
 use OpenCloud\Common\Http\Client;
 use OpenCloud\Common\Http\Message\Formatter;
-use OpenCloud\Common\Http\Message\RequestSubscriber;
+use OpenCloud\Common\Http\Url;
 use OpenCloud\Common\Lang;
 use OpenCloud\Common\Log\Logger;
 use OpenCloud\Common\Service\Catalog;
@@ -73,6 +72,11 @@ class OpenStack extends Client
     private $authUrl;
 
     /**
+     * @var array The configs for storing info about client (because the parent property is not available)
+     */
+    private $clientConfigs;
+
+    /**
      * @var \OpenCloud\Identity\Resource\User
      */
     private $user;
@@ -86,10 +90,12 @@ class OpenStack extends Client
         $this->setSecret($secret);
         $this->setAuthUrl($url);
 
-        parent::__construct($url, $options);
+        $this->clientConfigs = ['base_uri' => $url, 'headers' => ['Accept' => 'application/json']] + $options;
 
-        $this->addSubscriber(RequestSubscriber::getInstance());
-        $this->setDefaultOption('headers/Accept', 'application/json');
+        parent::__construct($this->clientConfigs);
+
+        // TODO add subscriber
+        //$this->addSubscriber(RequestSubscriber::getInstance());
     }
 
     /**
@@ -350,7 +356,7 @@ class OpenStack extends Client
     }
 
     /**
-     * @return Url
+     * @return \GuzzleHttp\Psr7\Uri|string
      */
     public function getAuthUrl()
     {
@@ -460,7 +466,10 @@ class OpenStack extends Client
      */
     private function updateTokenHeader($token)
     {
-        $this->setDefaultOption('headers/X-Auth-Token', (string) $token);
+        // TODO find the way without construct
+
+        $this->clientConfigs['headers']['X-Auth-Token'] = (string) $token;
+        parent::__construct($this->clientConfigs);
     }
 
     /**
@@ -596,5 +605,19 @@ class OpenStack extends Client
             'region'  => $region,
             'urlType' => $urltype
         ));
+    }
+
+    /**
+     * Set client base uri
+     *
+     * @param string $url    New base url
+     *
+     * @return void
+     */
+    public function setBaseUrl(string $url)
+    {
+        // TODO find way without construct
+        $this->clientConfigs['base_uri'] = $url;
+        parent::__construct($this->clientConfigs);
     }
 }

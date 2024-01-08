@@ -18,7 +18,6 @@
 namespace OpenCloud\ObjectStore\Upload;
 
 use Exception;
-use Guzzle\Http\EntityBody;
 use OpenCloud\Common\Exceptions\RuntimeException;
 use OpenCloud\Common\Http\Client;
 use OpenCloud\ObjectStore\Exception\UploadException;
@@ -49,7 +48,7 @@ class AbstractTransfer
     protected $client;
 
     /**
-     * @var \Guzzle\Http\EntityBody The payload being transferred
+     * @var \GuzzleHttp\Psr7\Stream The payload being transferred
      */
     protected $entityBody;
 
@@ -100,10 +99,10 @@ class AbstractTransfer
     }
 
     /**
-     * @param EntityBody $entityBody
+     * @param Stream $entityBody
      * @return $this
      */
-    public function setEntityBody(EntityBody $entityBody)
+    public function setEntityBody(Stream $entityBody)
     {
         $this->entityBody = $entityBody;
 
@@ -183,7 +182,7 @@ class AbstractTransfer
     /**
      * Initiates the upload procedure.
      *
-     * @return \Guzzle\Http\Message\Response
+     * @return \GuzzleHttp\Psr7\Response
      * @throws RuntimeException If the transfer is not in a "running" state
      * @throws UploadException  If any errors occur during the upload
      * @codeCoverageIgnore
@@ -210,7 +209,7 @@ class AbstractTransfer
      * retrieved, streams all the segments concatenated.
      *
      * @link http://docs.rackspace.com/files/api/v1/cf-devguide/content/Large_Object_Creation-d1e2019.html
-     * @return \Guzzle\Http\Message\Response
+     * @return \GuzzleHttp\Psr7\Response
      * @codeCoverageIgnore
      */
     private function createManifest()
@@ -235,7 +234,7 @@ class AbstractTransfer
         );
 
         $url = clone $this->options['containerUrl'];
-        $url->addPath($this->options['objectName']);
+        $url = $url->addPath($this->options['objectName']);
 
         return $this->client->put($url, $headers)->send();
     }

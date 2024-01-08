@@ -17,9 +17,9 @@
 
 namespace OpenCloud\Compute\Resource;
 
-use Guzzle\Http\Url;
 use OpenCloud\Common\Exceptions;
 use OpenCloud\Common\Http\Message\Formatter;
+use OpenCloud\Common\Http\Url;
 use OpenCloud\Common\Lang;
 use OpenCloud\Common\Metadata;
 

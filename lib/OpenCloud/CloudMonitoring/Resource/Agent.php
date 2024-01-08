@@ -71,7 +71,7 @@ class Agent extends ReadOnlyResource
         }
 
         $url = clone $this->getUrl();
-        $url->addPath('connections')->addPath($connectionId);
+        $url = $url->addPath('connections')->addPath($connectionId);
 
         $response = $this->getClient()->get($url)->send();
         $body = Formatter::decode($response);

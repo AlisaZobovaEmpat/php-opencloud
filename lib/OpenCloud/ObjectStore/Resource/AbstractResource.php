@@ -17,7 +17,7 @@
 
 namespace OpenCloud\ObjectStore\Resource;
 
-use Guzzle\Http\Message\Response;
+use GuzzleHttp\Psr7\Response;
 use OpenCloud\Common\Base;
 use OpenCloud\Common\Http\Client;
 use OpenCloud\Common\Service\ServiceInterface;
@@ -112,7 +112,7 @@ abstract class AbstractResource extends Base
         foreach ($headers as $header => $value) {
             // Only allow allow X-<keyword>-* headers to pass through after stripping them
             if (static::headerIsValidMetadata($header) && ($key = self::stripPrefix($header))) {
-                $output[$key] = (string) $value;
+                $output[$key] = implode(', ', $value);
             }
         }
 

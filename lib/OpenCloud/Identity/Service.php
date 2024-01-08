@@ -17,7 +17,7 @@
 
 namespace OpenCloud\Identity;
 
-use Guzzle\Http\ClientInterface;
+use GuzzleHttp\ClientInterface;
 use OpenCloud\Common\Base;
 use OpenCloud\Common\Collection\PaginatedIterator;
 use OpenCloud\Common\Collection\ResourceIterator;
@@ -56,14 +56,14 @@ class Service extends AbstractService
     /**
      * Get this service's URL, with appended path if necessary.
      *
-     * @return \Guzzle\Http\Url
+     * @return \GuzzleHttp\Psr7\Uri
      */
     public function getUrl($path = null)
     {
         $url = clone $this->getEndpoint();
 
         if ($path) {
-            $url->addPath($path);
+            $url = $url->addPath($path);
         }
 
         return $url;
@@ -108,13 +108,13 @@ class Service extends AbstractService
         switch ($mode) {
             default:
             case UserConst::MODE_NAME:
-                $url->setQuery(array('name' => $search));
+                $url = $url->setQuery(array('name' => $search));
                 break;
             case UserConst::MODE_ID:
-                $url->addPath($search);
+                $url = $url->addPath($search);
                 break;
             case UserConst::MODE_EMAIL:
-                $url->setQuery(array('email' => $search));
+                $url = $url->setQuery(array('email' => $search));
                 break;
         }
 
@@ -169,23 +169,23 @@ class Service extends AbstractService
      *
      * @param   $json    string The JSON data-structure used in the HTTP entity body when POSTing to the API
      * @headers $headers array  Additional headers to send (optional)
-     * @return  \Guzzle\Http\Message\Response
+     * @return  \Psr\Http\Message\ResponseInterface
      */
     public function generateToken($json, array $headers = array())
     {
         $url = $this->getUrl();
-        $url->addPath('tokens');
+        $url = $url->addPath('tokens');
 
         $headers += self::getJsonHeader();
 
-        return $this->getClient()->post($url, $headers, $json)->send();
+        return $this->getClient()->post($url, ['headers' => $headers, 'json' => json_decode($json, true)]);
     }
 
     /**
      * Revoke a given token based on its ID
      *
      * @param $tokenId string Token ID
-     * @return \Guzzle\Http\Message\Response
+     * @return \GuzzleHttp\Psr7\Response
      */
     public function revokeToken($tokenId)
     {
@@ -203,7 +203,7 @@ class Service extends AbstractService
     public function getTenants()
     {
         $url = $this->getUrl();
-        $url->addPath('tenants');
+        $url = $url->addPath('tenants');
 
         $response = $this->getClient()->get($url)->send();
 

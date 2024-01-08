@@ -170,14 +170,14 @@ class Service extends NovaService
     public function imageList($details = true, array $filter = array())
     {
         $url = clone $this->getUrl();
-        $url->addPath('images');
+        $url = $url->addPath('images');
 
         if ($details === true) {
-            $url->addPath('detail');
+            $url = $url->addPath('detail');
         }
 
         if (count($filter)) {
-            $url->setQuery($filter);
+            $url = $url->setQuery($filter);
         }
 
         return $this->resourceList('Image', $url);
