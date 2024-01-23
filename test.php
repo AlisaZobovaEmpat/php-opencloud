@@ -15,6 +15,8 @@ $container = $service->getContainer('ccc');
 echo $container->getCdn()->getCdnSslUri() ."\n";
 echo $container->getCdn()->getCdnUri() ."\n";
 
+$container->uploadObject('example.txt', fopen('composer.json', 'r+'));
+
 $file = $container->getObject('example.txt');
 
 $file->setContent(fopen('composer.lock', 'r+'));
@@ -30,9 +32,4 @@ foreach ($files as $file) {
     echo($file->getName()."\n");
 }
 
-//$container->uploadObject('example.txt', fopen('composer.json', 'r+'));
-//
-//$file = $container->getObject('example.txt');
-//
-//echo ($file->getContent());
 
