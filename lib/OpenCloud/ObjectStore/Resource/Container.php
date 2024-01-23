@@ -449,12 +449,6 @@ class Container extends AbstractContainer
 
         // @todo for new major release: Return response rather than populated DataObject
 
-        // add header because `400 Bad Request` response X-Object-Manifest must be in the format container/prefix (it was null sometimes)
-
-        if(!in_array('X-Object-Manifest', $headers)) {
-            $headers['X-Object-Manifest'] = implode('/', array_slice(explode('/', $url), -2));
-        }
-
         $response = $this->getClient()->put($url, [
             'headers' => $headers,
             'body' => $entityBody
