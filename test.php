@@ -15,16 +15,16 @@ $container = $service->getContainer('ccc');
 echo $container->getCdn()->getCdnSslUri() ."\n";
 echo $container->getCdn()->getCdnUri() ."\n";
 
-$container->uploadObject('example.txt', fopen('composer.json', 'r+'));
+$container->uploadObject('test/ccc.txt', fopen('composer.json', 'r+'));
 
-$file = $container->getObject('example.txt');
+$file = $container->getObject('test/ccc.txt');
 
 $file->setContent(fopen('composer.lock', 'r+'));
 $file->update();
 
 echo ($file->getContent());
 
-$container->deleteObject('example.txt');
+$container->deleteObject('test/ccc.txt');
 
 $files = $container->objectList();
 

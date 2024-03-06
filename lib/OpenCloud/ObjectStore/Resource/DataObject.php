@@ -147,7 +147,7 @@ class DataObject extends AbstractResource
             ->setContentLength(implode(',', $headers[HeaderConst::CONTENT_LENGTH]))
             ->setEtag(implode(',' ,$headers[HeaderConst::ETAG]))
             // do not cast to a string to allow for null (i.e. no header)
-            ->setManifest(in_array(HeaderConst::X_OBJECT_MANIFEST, $headers) ? $headers[HeaderConst::X_OBJECT_MANIFEST] : null);
+            ->setManifest(in_array(HeaderConst::X_OBJECT_MANIFEST, $headers) ? $headers[HeaderConst::X_OBJECT_MANIFEST][0] : null);
     }
 
     public function refresh()
@@ -358,7 +358,7 @@ class DataObject extends AbstractResource
             HeaderConst::LAST_MODIFIED     => $this->lastModified,
             HeaderConst::CONTENT_LENGTH    => $this->contentLength,
             HeaderConst::ETAG              => $this->etag,
-            HeaderConst::X_OBJECT_MANIFEST => $this->manifest
+            // HeaderConst::X_OBJECT_MANIFEST => $this->manifest
         );
 
         return $this->container->uploadObject($this->name, $this->content, $metadata);

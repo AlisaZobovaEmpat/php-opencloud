@@ -188,11 +188,11 @@ class Logger extends AbstractLogger
     /**
      * Outputs a log message if necessary.
      *
-     * @param string $logLevel
-     * @param string $message
-     * @param string $context
+     * @param $level
+     * @param $message
+     * @param $context
      */
-    public function log(mixed $level, string|\Stringable $message, array $context = array()): void
+    public function log($level, $message, $context = array()): void
     {
         if ($this->outputIsUrgent($level) || $this->isEnabled()) {
             $this->dispatch($message, $context);
