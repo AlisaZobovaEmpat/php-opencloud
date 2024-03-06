@@ -511,8 +511,7 @@ class DataObject extends AbstractResource
 
         return $this->getService()
             ->getClient()
-            ->delete($url, $headers)
-            ->send();
+            ->delete($url, $headers);
     }
 
     /**

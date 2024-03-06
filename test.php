@@ -24,6 +24,12 @@ $file->update();
 
 echo ($file->getContent());
 
+echo($container->objectExists('test/ccc.txt'));
+
+$file = $container->getObject('test/ccc.txt');
+
+//echo($file->purge());
+
 $container->deleteObject('test/ccc.txt');
 
 $files = $container->objectList();
