@@ -22,6 +22,7 @@ use GuzzleHttp\Psr7\Response;
 
 use OpenCloud\Common\Constants\Header as HeaderConst;
 use OpenCloud\Common\Exceptions;
+use OpenCloud\Common\Http\Url;
 use OpenCloud\Common\Lang;
 use OpenCloud\ObjectStore\Constants\UrlType;
 use OpenCloud\ObjectStore\Exception\ObjectNotEmptyException;
