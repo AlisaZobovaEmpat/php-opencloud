@@ -192,7 +192,7 @@ class Logger extends AbstractLogger
      * @param string $message
      * @param string $context
      */
-    public function log(mixed $level, string|\Stringable $message, array $context = array()): void
+    public function log(mixed $level, $message, mixed $context = array()): void
     {
         if ($this->outputIsUrgent($level) || $this->isEnabled()) {
             $this->dispatch($message, $context);

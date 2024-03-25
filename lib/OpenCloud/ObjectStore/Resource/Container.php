@@ -18,8 +18,6 @@
 namespace OpenCloud\ObjectStore\Resource;
 
 use GuzzleHttp\Psr7;
-use Guzzle\Http\Exception\BadResponseException;
-use Guzzle\Http\Exception\ClientErrorResponseException;
 use GuzzleHttp\Psr7\Response;
 
 use GuzzleHttp\Exception\ClientException;
@@ -419,8 +417,8 @@ class Container extends AbstractContainer
             // Send HEAD request to check resource existence
             $url = clone $this->getUrl();
             $url = $url->addPath((string) $name);
-            $this->getClient()->head($url)->send();
-        } catch (ClientErrorResponseException $e) {
+            $this->getClient()->head($url);
+        } catch (ClientException $e) {
             // If a 404 was returned, then the object doesn't exist
             if ($e->getResponse()->getStatusCode() === 404) {
                 return false;
